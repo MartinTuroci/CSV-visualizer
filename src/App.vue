@@ -1,29 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <csv-input @parsedData="handleParsedData" @parseError="handleParseError"></csv-input>
+    <p v-if="errMsg">{{ errMsg }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import Vue from 'vue';
+import CsvInput from '@/components/CsvInput.vue';
+import CsvObjectModel from '@/models/CsvObjectModel';
 
 export default Vue.extend({
-  name: "app",
+  data() {
+    return {
+      errMsg: ''
+    };
+  },
   components: {
-    HelloWorld
+    CsvInput
+  },
+  methods: {
+    handleParsedData(parsedData: CsvObjectModel[]): void {
+      this.errMsg = '';
+    },
+    handleParseError(errMsg: string): void {
+      this.errMsg = errMsg;
+    }
   }
 });
 </script>
-
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
