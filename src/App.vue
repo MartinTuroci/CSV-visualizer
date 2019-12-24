@@ -1,30 +1,30 @@
 <template>
   <div id="app">
-    <csv-input @parsedData="handleParsedData" @parseError="handleParseError"></csv-input>
-    <p v-if="errMsg">{{ errMsg }}</p>
+    <csv-input @parsedData="handleParsedData"></csv-input>
+    <graph :graphData="graphData"></graph>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import CsvInput from '@/components/CsvInput.vue';
+import Graph from '@/components/Graph.vue';
 import CsvObjectModel from '@/models/CsvObjectModel';
+import DataWrapper from '@/models/DataWrapper';
 
 export default Vue.extend({
   data() {
     return {
-      errMsg: ''
+      graphData: {} as DataWrapper<CsvObjectModel[]>
     };
   },
   components: {
-    CsvInput
+    CsvInput,
+    Graph
   },
   methods: {
-    handleParsedData(parsedData: CsvObjectModel[]): void {
-      this.errMsg = '';
-    },
-    handleParseError(errMsg: string): void {
-      this.errMsg = errMsg;
+    handleParsedData(parsedData: DataWrapper<CsvObjectModel[]>): void {
+      this.graphData = parsedData;
     }
   }
 });
