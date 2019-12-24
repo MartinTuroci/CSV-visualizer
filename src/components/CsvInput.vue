@@ -29,7 +29,9 @@ export default Vue.extend({
           this.$emit('parsedData', this.parseFileContents(fileContents));
         } catch (error) {
           (this.$refs.fileInput as HTMLInputElement).value = '';
-          this.errMsg = error.message;
+          if (process.env.NODE_ENV === 'development') {
+            throw error;
+          }
         }
       }
     },
@@ -56,6 +58,7 @@ export default Vue.extend({
         const y = parseInt(cols[1], 10);
 
         if (isNaN(x) || isNaN(y)) {
+          this.errMsg = 'Incorrect data format';
           throw new Error('Incorrect data format');
         }
 

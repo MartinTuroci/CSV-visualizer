@@ -7,6 +7,7 @@ import Vue, { PropType } from 'vue';
 import * as d3 from 'd3';
 import CsvObjectModel from '@/models/CsvObjectModel';
 import DataWrapper from '@/models/DataWrapper';
+import { ContainerElement } from 'd3';
 
 const margin = { top: 30, right: 30, bottom: 30, left: 60 },
   width = 870 - margin.left - margin.right,
@@ -21,11 +22,13 @@ export default Vue.extend({
   },
   data() {
     return {
-      svg: {} as d3.Selection<SVGGElement, unknown, HTMLElement, any>
+      svg: {} as d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+      tooltip: {} as d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
     };
   },
   mounted() {
     this.svg = this.createBaseSvg();
+    this.tooltip = this.createTooltip();
   },
   watch: {
     graphData(newValue: DataWrapper<CsvObjectModel[]>): void {
@@ -74,7 +77,38 @@ export default Vue.extend({
         .attr('cx', (graphItem: CsvObjectModel) => x(graphItem.x))
         .attr('cy', (graphItem: CsvObjectModel) => y(graphItem.y))
         .attr('r', 1.5)
-        .style('fill', '#69b3a2');
+        .style('fill', '#69b3a2')
+        .on('mouseover', this.onMouseOver)
+        .on('mousemove', this.onMouseMove)
+        .on('mouseleave', this.onMouseLeave);
+    },
+    createTooltip(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any> {
+      return d3
+        .select('#graph')
+        .append('div')
+        .style('opacity', 0)
+        .attr('class', 'tooltip')
+        .style('background-color', 'white')
+        .style('border', 'solid')
+        .style('border-width', '1px')
+        .style('border-radius', '5px')
+        .style('padding', '10px')
+        .style('position', 'absolute');
+    },
+    onMouseOver(): void {
+      this.tooltip.style('opacity', 1);
+    },
+    onMouseMove(data: CsvObjectModel, i: number, nodes: ArrayLike<SVGCircleElement>): void {
+      this.tooltip
+        .html('Description: ' + data.description)
+        .style('left', d3.mouse(nodes[i])[0] + 90 + 'px')
+        .style('top', d3.mouse(nodes[i])[1] + 'px');
+    },
+    onMouseLeave(): void {
+      this.tooltip
+        .transition()
+        .duration(200)
+        .style('opacity', 0);
     }
   }
 });
