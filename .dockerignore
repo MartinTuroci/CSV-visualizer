@@ -1,0 +1,7 @@
+dist
+node_modules
+public
+README.md
+yarn.lock
+.gitignore
+.vscode

@@ -1,29 +1,29 @@
 # csv_visualizer
 
 ## Project setup
+
+###Local development
+
 ```
-yarn install
+npm i && npm run serve
 ```
 
-### Compiles and hot-reloads for development
+or
+
 ```
-yarn serve
+yarn install && yarn serve
 ```
 
-### Compiles and minifies for production
+###Docker build an image
+
 ```
-yarn build
+docker build --rm -f "Dockerfile" -t csv_visualizer:latest .
 ```
 
-### Run your unit tests
+###Docker run an image
+
 ```
-yarn test:unit
+docker run --rm -d -p 8000:8000/tcp csv_visualizer:latest
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+go ahead to localhost:8000 in your browser and enjoy :)
