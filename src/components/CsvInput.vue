@@ -4,7 +4,7 @@
       Upload your csv file
       <input type="file" accept=".csv" @input="handleFile" ref="fileInput" />
     </label>
-    <p v-if="errMsg">{{ errMsg }}</p>
+    <p v-if="errMsg" class="error">{{ errMsg }}</p>
   </div>
 </template>
 
@@ -22,16 +22,18 @@ export default Vue.extend({
   methods: {
     async handleFile(e: Event): Promise<void> {
       const file = (e.target as HTMLInputElement).files![0];
-
       if (file) {
-        try {
-          const fileContents = await this.getFileContents(file);
-          this.$emit('parsedData', this.parseFileContents(fileContents));
-        } catch (error) {
-          (this.$refs.fileInput as HTMLInputElement).value = '';
-          if (process.env.NODE_ENV === 'development') {
-            throw error;
-          }
+        await this.processFile(file);
+      }
+    },
+    async processFile(file: File): Promise<void> {
+      try {
+        const fileContents = await this.getFileContents(file);
+        this.$emit('parsedData', this.parseFileContents(fileContents));
+      } catch (error) {
+        (this.$refs.fileInput as HTMLInputElement).value = '';
+        if (process.env.NODE_ENV === 'development') {
+          throw error;
         }
       }
     },
