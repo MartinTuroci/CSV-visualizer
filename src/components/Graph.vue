@@ -11,7 +11,8 @@ import { ContainerElement } from 'd3';
 
 const margin = { top: 30, right: 30, bottom: 30, left: 60 },
   width = 870 - margin.left - margin.right,
-  height = 400 - margin.top - margin.bottom;
+  height = 400 - margin.top - margin.bottom,
+  dotRadius = 5;
 
 export default Vue.extend({
   props: {
@@ -44,7 +45,7 @@ export default Vue.extend({
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr('transform', `translate(${margin.left},${margin.top})`);
     },
     createAxes(
       graphData: DataWrapper<CsvObjectModel[]>
@@ -56,14 +57,31 @@ export default Vue.extend({
 
       this.svg
         .append('g')
-        .attr('transform', 'translate(0,' + height + ')')
+        .attr('transform', `translate(0,${height})`)
         .call(d3.axisBottom(x));
+
+      // x axis label
+      this.svg
+        .append('text')
+        .attr('transform', `translate(${width / 2},${height + margin.bottom})`)
+        .attr('class', 'axis-label')
+        .text(graphData.labelX);
 
       const y = d3
         .scaleLinear()
         .domain([graphData.minY, graphData.maxY])
         .range([height, 0]);
       this.svg.append('g').call(d3.axisLeft(y));
+
+      // y axis label
+      this.svg
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - margin.left)
+        .attr('x', 0 - height / 2)
+        .attr('dy', '0.75em')
+        .attr('class', 'axis-label')
+        .text(graphData.labelY);
 
       return { x, y };
     },
@@ -76,8 +94,8 @@ export default Vue.extend({
         .append('circle')
         .attr('cx', (graphItem: CsvObjectModel) => x(graphItem.x))
         .attr('cy', (graphItem: CsvObjectModel) => y(graphItem.y))
-        .attr('r', 1.5)
-        .style('fill', '#69b3a2')
+        .attr('r', dotRadius)
+        .style('fill', '#fcf001')
         .on('mouseover', this.onMouseOver)
         .on('mousemove', this.onMouseMove)
         .on('mouseleave', this.onMouseLeave);
@@ -86,23 +104,16 @@ export default Vue.extend({
       return d3
         .select('#graph')
         .append('div')
-        .style('opacity', 0)
-        .attr('class', 'tooltip')
-        .style('background-color', 'white')
-        .style('border', 'solid')
-        .style('border-width', '1px')
-        .style('border-radius', '5px')
-        .style('padding', '10px')
-        .style('position', 'absolute');
+        .attr('class', 'tooltip');
     },
     onMouseOver(): void {
       this.tooltip.style('opacity', 1);
     },
     onMouseMove(data: CsvObjectModel, i: number, nodes: ArrayLike<SVGCircleElement>): void {
       this.tooltip
-        .html('Description: ' + data.description)
-        .style('left', d3.mouse(nodes[i])[0] + 90 + 'px')
-        .style('top', d3.mouse(nodes[i])[1] + 'px');
+        .html(`<p>X: ${data.x}</p>\n<p>Y: ${data.y}</p>`)
+        .style('left', `${d3.mouse(nodes[i])[0] + 90}px`)
+        .style('top', `${d3.mouse(nodes[i])[1]}px`);
     },
     onMouseLeave(): void {
       this.tooltip
@@ -113,3 +124,8 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+#graph {
+  position: relative;
+}
+</style>

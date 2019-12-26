@@ -4,6 +4,8 @@ export default class DataWrapper<T> {
     private _minX: number,
     private _maxY: number,
     private _minY: number,
+    private _labelX: string,
+    private _labelY: string,
     private _dataArr: T
   ) {}
 
@@ -21,6 +23,14 @@ export default class DataWrapper<T> {
 
   get maxY() {
     return this._maxY;
+  }
+
+  get labelX() {
+    return this._labelX;
+  }
+
+  get labelY() {
+    return this._labelY;
   }
 
   get data() {
