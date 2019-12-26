@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="container">
     <csv-input @parsedData="handleParsedData"></csv-input>
     <graph :graphData="graphData"></graph>
   </div>
@@ -29,3 +29,18 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss">
+@import '@/styles/App';
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  background: $primary;
+  color: $secondary;
+}
+</style>

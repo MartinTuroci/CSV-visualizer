@@ -1,0 +1,18 @@
+// Since vue scoped styles can be applied to component template only and d3 is dynamically inserted to DOM,
+// we have to include global css styles
+.axis-label {
+  text-anchor: middle;
+  fill: $tertiary;
+}
+.tooltip {
+  opacity: 0;
+  background-color: $secondary;
+  color: $primary;
+  border: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 10px;
+  position: absolute;
+  text-align: left;
+  width: fit-content;
+}
