@@ -2,10 +2,8 @@ import { mount, Wrapper } from '@vue/test-utils';
 import Graph from '@/components/Graph.vue';
 import DataWrapper from '@/models/DataWrapper';
 import CsvObjectModel from '@/models/CsvObjectModel';
-import { CombinedVueInstance } from 'vue/types/vue';
 
-// @ts-ignore
-let wrapper: Wrapper<CombinedVueInstance<Graph, object, object, object, Record<never, any>>>;
+let wrapper: Wrapper<Vue>;
 
 beforeAll(() => {
   wrapper = mount(Graph, {
@@ -16,9 +14,9 @@ beforeAll(() => {
   });
   // set real data - mocking loading CSV via input and triggering watcher
   wrapper.setProps({
-    graphData: new DataWrapper(3000, 0, 400000, 0,'Label A','Label B', [
-      new CsvObjectModel(2000, 50000, 'Desc1'),
-      new CsvObjectModel(3000, 400000, 'Desc2')
+    graphData: new DataWrapper(3000, 0, 400000, 0, 'Label A', 'Label B', [
+      new CsvObjectModel(2000, 50000),
+      new CsvObjectModel(3000, 400000)
     ])
   });
 });
@@ -42,11 +40,12 @@ describe('Graph.vue', () => {
   });
 
   it('renders correct length of Y axis', () => {
-    const axisStartElement = document.querySelector('#graph > svg > g > g:nth-child(2) > g:nth-child(2) > text');
+    // #graph > svg > g > g:nth-child(3) > g:nth-child(2) > text
+    const axisStartElement = document.querySelector('#graph > svg > g > g:nth-child(3) > g > text');
     expect(axisStartElement).toBeTruthy();
     expect(axisStartElement!.innerHTML).toEqual('0');
 
-    const axisEndElement = document.querySelector('#graph > svg > g > g:nth-child(2) > g:last-child > text');
+    const axisEndElement = document.querySelector('#graph > svg > g > g:nth-child(3) > g:last-child > text');
     expect(axisEndElement).toBeTruthy();
     expect(axisEndElement!.innerHTML).toEqual('400,000');
   });

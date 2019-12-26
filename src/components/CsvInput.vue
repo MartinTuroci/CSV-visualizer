@@ -2,14 +2,7 @@
   <div>
     <label for="fileInput" class="label">
       Upload your csv file
-      <input
-        type="file"
-        id="fileInput"
-        ref="fileInput"
-        name="fileInput"
-        accept=".csv"
-        @input="handleFile"
-      />
+      <input type="file" id="fileInput" ref="fileInput" name="fileInput" accept=".csv" @input="handleFile" />
     </label>
     <p v-if="errMsg" class="csv-error">{{ errMsg }}</p>
     <p v-else class="file-name">{{ fileName }}</p>
