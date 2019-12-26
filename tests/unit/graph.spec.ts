@@ -16,7 +16,7 @@ beforeAll(() => {
   });
   // set real data - mocking loading CSV via input and triggering watcher
   wrapper.setProps({
-    graphData: new DataWrapper(3000, 0, 400000, 0, [
+    graphData: new DataWrapper(3000, 0, 400000, 0,'Label A','Label B', [
       new CsvObjectModel(2000, 50000, 'Desc1'),
       new CsvObjectModel(3000, 400000, 'Desc2')
     ])
