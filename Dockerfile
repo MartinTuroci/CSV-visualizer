@@ -1,5 +1,5 @@
 # Clean OS distribution as base image
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 USER root
 WORKDIR /usr/src/app
