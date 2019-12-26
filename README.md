@@ -33,4 +33,5 @@ go to localhost:8000 in your browser, try to load sample_data/test.csv and enjoy
 - Loading .csv files with 2 cols (x and y coordinates that must be numbers)
 - Simple validation
 - Multiple delimiters support
+- Simple tooltips
 - Ability to build and run as a docker image
