@@ -31,8 +31,9 @@ describe('CsvInput.vue', () => {
     // @ts-ignore
     await wrapper.vm.processFile(mockFile);
 
-    expect(wrapper.find('.csv-error')).toBeTruthy();
-    expect(wrapper.find('.csv-error').text()).toEqual('Incorrect data format (only numbers allowed).');
+    const errorWrapper = wrapper.find('.csv-error');
+    expect(errorWrapper).toBeTruthy();
+    expect(errorWrapper.text()).toEqual('Incorrect data format (only numbers allowed).');
   });
 
   it('shows cols number error on invalid csv', async () => {
@@ -41,7 +42,8 @@ describe('CsvInput.vue', () => {
     // @ts-ignore
     await wrapper.vm.processFile(mockFile);
 
-    expect(wrapper.find('.csv-error')).toBeTruthy();
-    expect(wrapper.find('.csv-error').text()).toEqual('CSV can contain only 2 cols (x and y coordinates).');
+    const errorWrapper = wrapper.find('.csv-error');
+    expect(errorWrapper).toBeTruthy();
+    expect(errorWrapper.text()).toEqual('CSV can contain only 2 cols (x and y coordinates).');
   });
 });
