@@ -23,8 +23,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    async handleFile(e: Event): Promise<void> {
-      const file = (e.target as HTMLInputElement).files![0];
+    async handleFile({ target }: { target: HTMLInputElement }): Promise<void> {
+      const file = target.files![0];
       if (file) {
         this.fileName = file.name;
         await this.processFile(file);
