@@ -2,14 +2,7 @@
   <div>
     <label for="fileInput" class="label">
       Upload your csv file
-      <input
-        type="file"
-        id="fileInput"
-        ref="fileInput"
-        name="fileInput"
-        accept=".csv"
-        @input="handleFile"
-      />
+      <input type="file" id="fileInput" ref="fileInput" name="fileInput" accept=".csv" @input="handleFile" />
     </label>
     <p v-if="errMsg" class="csv-error">{{ errMsg }}</p>
     <p v-else class="file-name">{{ fileName }}</p>
@@ -18,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CsvObjectModel from '@/models/CsvObjectModel';
+import CsvObject from '@/models/CsvObject';
 import DataWrapper from '@/models/DataWrapper';
 import constants from '@/utils/constants';
 
@@ -62,7 +55,7 @@ export default Vue.extend({
         reader.readAsText(file, 'utf-8');
       });
     },
-    parseFileContents(contents: string): DataWrapper<CsvObjectModel[]> {
+    parseFileContents(contents: string): DataWrapper<CsvObject[]> {
       const rows = contents.split('\n');
       const delimiter = this.getDelimiter(contents);
       const { labelX, labelY } = this.parseLabels(rows.shift()!, delimiter);
@@ -75,10 +68,10 @@ export default Vue.extend({
           throw new Error('Incorrect data format (only numbers allowed).');
         }
 
-        return new CsvObjectModel(x, y);
+        return new CsvObject(x, y);
       });
 
-      return new DataWrapper<CsvObjectModel[]>(labelX, labelY, csvObjectArr);
+      return new DataWrapper<CsvObject[]>(labelX, labelY, csvObjectArr);
     },
     parseLabels(headers: string, delimiter: string): Record<string, string> {
       const splitHeaders = headers.split(delimiter);

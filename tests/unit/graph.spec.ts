@@ -1,7 +1,7 @@
 import { mount, Wrapper } from '@vue/test-utils';
 import Graph from '@/components/Graph.vue';
 import DataWrapper from '@/models/DataWrapper';
-import CsvObjectModel from '@/models/CsvObjectModel';
+import CsvObject from '@/models/CsvObject';
 
 let wrapper: Wrapper<Vue>;
 
@@ -14,10 +14,7 @@ beforeAll(() => {
   });
   // set real data - mocking loading CSV via input and triggering watcher
   wrapper.setProps({
-    graphData: new DataWrapper('Label A', 'Label B', [
-      new CsvObjectModel(2000, 50000),
-      new CsvObjectModel(3000, 400000)
-    ])
+    graphData: new DataWrapper('Label A', 'Label B', [new CsvObject(2000, 50000), new CsvObject(3000, 400000)])
   });
 });
 

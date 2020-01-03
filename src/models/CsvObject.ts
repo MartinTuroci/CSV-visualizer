@@ -1,4 +1,4 @@
-export default class CsvObjectModel {
+export default class CsvObject {
   constructor(private _x: number, private _y: number) {}
 
   get x(): number {

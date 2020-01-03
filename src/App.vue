@@ -9,13 +9,13 @@
 import Vue from 'vue';
 import CsvInput from '@/components/CsvInput.vue';
 import Graph from '@/components/Graph.vue';
-import CsvObjectModel from '@/models/CsvObjectModel';
+import CsvObject from '@/models/CsvObject';
 import DataWrapper from '@/models/DataWrapper';
 
 export default Vue.extend({
   data() {
     return {
-      graphData: {} as DataWrapper<CsvObjectModel[]>
+      graphData: {} as DataWrapper<CsvObject[]>
     };
   },
   components: {
@@ -23,7 +23,7 @@ export default Vue.extend({
     Graph
   },
   methods: {
-    handleParsedData(parsedData: DataWrapper<CsvObjectModel[]>): void {
+    handleParsedData(parsedData: DataWrapper<CsvObject[]>): void {
       this.graphData = parsedData;
     }
   }
