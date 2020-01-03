@@ -8,6 +8,7 @@ import * as d3 from 'd3';
 import CsvObjectModel from '@/models/CsvObjectModel';
 import DataWrapper from '@/models/DataWrapper';
 import { ContainerElement } from 'd3';
+import { getMaxMin } from '@/utils/utils';
 
 const margin = { top: 30, right: 30, bottom: 30, left: 60 },
   width = 870 - margin.left - margin.right,
@@ -50,9 +51,11 @@ export default Vue.extend({
     createAxes(
       graphData: DataWrapper<CsvObjectModel[]>
     ): { x: d3.ScaleLinear<number, number>; y: d3.ScaleLinear<number, number> } {
+      let { max, min } = getMaxMin(graphData.data as [], (csvObj: CsvObjectModel) => csvObj.x);
+
       const x = d3
         .scaleLinear()
-        .domain([graphData.minX, graphData.maxX])
+        .domain([min, max])
         .range([0, width]);
 
       this.svg
@@ -67,9 +70,10 @@ export default Vue.extend({
         .attr('class', 'axis-label')
         .text(graphData.labelX);
 
+      ({ max, min } = getMaxMin(graphData.data as [], (csvObj: CsvObjectModel) => csvObj.y));
       const y = d3
         .scaleLinear()
-        .domain([graphData.minY, graphData.maxY])
+        .domain([min, max])
         .range([height, 0]);
       this.svg.append('g').call(d3.axisLeft(y));
 
